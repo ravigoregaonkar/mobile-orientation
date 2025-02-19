@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button onclick="requestOrientationPermission()">Premission</button>
+    <button onclick="requestDeviceOrientation()">Premission</button>
 
   <div class="cube">
     <div class="face front"></div>
@@ -17,32 +17,44 @@
     <div class="face left"></div>
     <div class="face right"></div>
   </div>
-    <script src="scripts.js"></script>
+  <script>
+    //Tutorial is on YouTube(https://www.youtube.com/@moinsite)
+ 
+ function handleOrientation(event) {
+   let alpha = event.alpha
+   let beta = event.beta
+   let gamma = event.gamma
+ 
+   let cube = document.querySelector('.cube');
+   cube.style.transform = 'rotateX(' + beta + 'deg) rotateY(' + gamma + 'deg) rotateZ(' + alpha + 'deg)';
+ 
+ }
+ 
+ 
+ async function requestDeviceOrientation() {
+   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+     //iOS 13+ devices
+     try {
+       const permissionState = await DeviceOrientationEvent.requestPermission()
+       if (permissionState === 'granted') {
+         window.addEventListener('deviceorientation', handleOrientation)
+       } else {
+         alert('Permission was denied')
+       }
+     } catch (error) {
+       alert(error)
+     }
+   } else if ('DeviceOrientationEvent' in window) {
+     //non iOS 13+ devices
+     console.log("not iOS");
+     window.addEventListener('deviceorientation', handleOrientation)
+   } else {
+     //not supported
+     alert('nicht unterstützt')
+   }
+ }
+ 
+ 
+ </script>
 </body>
-<script>
-    function requestOrientationPermission() {
-
-DeviceOrientationEvent.requestPermission()
-
-    .then(response => {
-
-        if (response === 'granted') {
-
-            // Start listening to device orientation events
-
-            window.addEventListener('deviceorientation', handleOrientationChange);
-            alert("permissin access")
-
-        } else {
-
-            // Handle case where user denied permission
-            alert("permision denied")
-        }
-
-    })
-
-    .catch(error => console.error('Error requesting permission:', error));
-
-}
-</script>
 </html>
