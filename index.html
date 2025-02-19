@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Step Quiz with Validation and Indicators</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button onclick="requestDeviceOrientation()">Premission</button>
+
+  <div class="cube">
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
+    <div class="face left"></div>
+    <div class="face right"></div>
+  </div>
+    <script src="scripts.js"></script>
+</body>
+<script>
+    function requestOrientationPermission() {
+
+DeviceOrientationEvent.requestPermission()
+
+    .then(response => {
+
+        if (response === 'granted') {
+
+            // Start listening to device orientation events
+
+            window.addEventListener('deviceorientation', handleOrientationChange);
+            alert("permissin access")
+
+        } else {
+
+            // Handle case where user denied permission
+            alert("permision denied")
+        }
+
+    })
+
+    .catch(error => console.error('Error requesting permission:', error));
+
+}
+</script>
+</html>
